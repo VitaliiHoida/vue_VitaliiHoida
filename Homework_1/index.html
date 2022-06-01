@@ -76,7 +76,7 @@
                 <hr/>
                 <button class="btn btn-success"
                         type="button"
-                        :disabled="!isDisabled"
+                        :disabled="!isEnabled"
                         @click="send"
                 >
                     Send Data
@@ -135,7 +135,7 @@
             fullName() {
                 return `${this.firstName} ${this.lastName}`;
             },
-            isDisabled() {
+            isEnabled() {
                 return (
                     this.email !== '' &&
                     this.phone !== '' &&
@@ -146,7 +146,7 @@
         },
         methods: {
             send() {
-                if (this.isDisabled) {
+                if (this.isEnabled) {
                     this.guests = this.guests.filter( guest => guest.name !== '' );
                     this.done = true;
                 }

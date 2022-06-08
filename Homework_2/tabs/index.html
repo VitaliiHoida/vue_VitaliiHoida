@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>Homework 2</title>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link href="css/styles.css" rel="stylesheet"/>
+    <script src="js/vue.js"></script>
+
+</head>
+<body>
+<div class="wrapper">
+    <div class="example">
+      <h1>Choose your category</h1>
+      <div class="tabs">
+
+      </div>
+            {{ sorted }}
+        <hr>
+<img :src="list[0].img">
+
+      <pre>
+        {{ list }}
+      </pre>
+    </div>
+</div>
+
+<script>
+    Vue.createApp({
+      data: () => ({
+          list: [
+            {
+              id: 0,
+              title: "Judas",
+              artist: "Lady Gaga",
+              category: ["Trending"],
+              img: 'img/judas.jpg'
+            },
+            {
+              id: 1,
+              title: "Paparazzi",
+              artist: "Lady Gaga",
+              category: ["Featured", "Genres"],
+            },
+            {
+              id: 2,
+              title: "Just Dance",
+              artist: "Lady Gaga",
+              category: ["Featured", "Trending"],
+            },
+            {
+              id: 3,
+              title: "Meet Me Halfway",
+              artist: "The Black Eye Peace",
+              category: ["Workout"],
+            },
+            {
+              id: 4,
+              title: "Can't Hold Us",
+              artist: "Macklemore & Ryan Lewis",
+              category: ["Most Played", "Trending"],
+            },
+            {
+              id: 5,
+              title: "Dark Horse",
+              artist: "Katy Perry",
+              category: ["Most Played", "New Releases"],
+            },
+          ],
+      }),
+      computed: {
+          sorted() {
+              return [...new Set(this.list.category.map(item => item.category))]
+          }
+      }
+    }).mount(".example");
+</script>
+</body>
+</html>

@@ -14,68 +14,103 @@
 <body>
 <div class="wrapper">
     <div class="example">
-      <h1>Choose your category</h1>
-      <div class="tabs">
 
-      </div>
-            {{ sorted }}
-        <hr>
-<img :src="list[0].img">
+        <h2 class="modal-title">Choose your category</h2>
 
-      <pre>
-        {{ list }}
-      </pre>
+        <ul class="nav nav-pills nav-fill">
+            <li class="nav-item" v-for="(items, i) in uniq_categories">
+                <a href="#" class="nav-link">{{ uniq_categories[i] }}</a>
+            </li>
+        </ul>
+
+        <div class="card-wrapper" id="">
+            <div class="card" v-for="(items, i) in list">
+                <img class="card-img-top" :src="list[i].img">
+                <div class="card-body">
+                    <span>Song: <b>{{ list[i].title }}</b></span>
+                    <span>Artist: <b>{{ list[i].artist }}</b></span>
+                    <span>Categories: <b>{{ list[i].category.join(', ') }}</b></span>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
 <script>
+    function unique(arr) {
+        let result = [];
+
+        for (let str of arr) {
+            if (!result.includes(str)) {
+                result.push(str);
+            }
+        }
+
+        return result;
+    }
+
     Vue.createApp({
-      data: () => ({
-          list: [
-            {
-              id: 0,
-              title: "Judas",
-              artist: "Lady Gaga",
-              category: ["Trending"],
-              img: 'img/judas.jpg'
-            },
-            {
-              id: 1,
-              title: "Paparazzi",
-              artist: "Lady Gaga",
-              category: ["Featured", "Genres"],
-            },
-            {
-              id: 2,
-              title: "Just Dance",
-              artist: "Lady Gaga",
-              category: ["Featured", "Trending"],
-            },
-            {
-              id: 3,
-              title: "Meet Me Halfway",
-              artist: "The Black Eye Peace",
-              category: ["Workout"],
-            },
-            {
-              id: 4,
-              title: "Can't Hold Us",
-              artist: "Macklemore & Ryan Lewis",
-              category: ["Most Played", "Trending"],
-            },
-            {
-              id: 5,
-              title: "Dark Horse",
-              artist: "Katy Perry",
-              category: ["Most Played", "New Releases"],
-            },
-          ],
-      }),
-      computed: {
-          sorted() {
-              return [...new Set(this.list.category.map(item => item.category))]
-          }
-      }
+        data: () => ({
+            list: [
+                {
+                    id: 0,
+                    title: "Judas",
+                    artist: "Lady Gaga",
+                    category: ["Trending"],
+                    img: 'img/judas.jpg',
+                },
+                {
+                    id: 1,
+                    title: "Paparazzi",
+                    artist: "Lady Gaga",
+                    category: ["Featured", "Genres"],
+                    img: 'img/paparazzi.jpg',
+                },
+                {
+                    id: 2,
+                    title: "Just Dance",
+                    artist: "Lady Gaga",
+                    category: ["Featured", "Trending"],
+                    img: 'img/dance.jpg',
+                },
+                {
+                    id: 3,
+                    title: "Meet Me Halfway",
+                    artist: "The Black Eyed Peas",
+                    category: ["Workout"],
+                    img: 'img/halfway.jpg',
+                },
+                {
+                    id: 4,
+                    title: "Can't Hold Us",
+                    artist: "Macklemore & Ryan Lewis",
+                    category: ["Most Played", "Trending"],
+                    img: 'img/cant.jpg',
+                },
+                {
+                    id: 5,
+                    title: "Dark Horse",
+                    artist: "Katy Perry",
+                    category: ["Most Played", "New Releases"],
+                    img: 'img/horse.jpg',
+                },
+            ],
+        }),
+        computed: {
+            uniq_categories() {
+                let res = [];
+                this.list.forEach(item => {
+                    res.push(item.category);
+                });
+                return unique(res.flat(1));
+            }
+        },
+        methods: {
+            filtr() {
+
+            }
+        },
     }).mount(".example");
 </script>
 </body>

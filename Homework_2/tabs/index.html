@@ -123,9 +123,7 @@
             },
             filtr(e) {
                 let goal = e.target.id;
-                this.list.forEach(item => {
-                    this.sorted = this.list.filter(item => item.category.indexOf(goal) > -1);
-                });
+                this.sorted = this.list.filter(item => item.category.indexOf(goal) > -1);
                 return this.sorted;
             }
         },

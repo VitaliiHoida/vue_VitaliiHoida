@@ -146,6 +146,12 @@
             },
             addGuest() {
                 this.guests.push({ name: '' });
+
+                this.$nextTick(() => {
+                    let i = this.$refs.guestInput.length - 1;
+                    this.$refs.guestInput[i].focus();
+                });
+
             },
             deleteGuest(i) {
                 this.guests.splice(i, 1);
@@ -157,8 +163,8 @@
         updated() {
             //массив из-за одинакового имени ref-a
 
-            let i = this.$refs.guestInput.length - 1;
-            this.$refs.guestInput[i].focus();
+            // let i = this.$refs.guestInput.length - 1;
+            // this.$refs.guestInput[i].focus();
         }
     }).mount('.example');
 </script>

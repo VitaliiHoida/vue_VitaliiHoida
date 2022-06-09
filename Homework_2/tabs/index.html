@@ -18,12 +18,15 @@
         <h2 class="modal-title">Choose your category</h2>
 
         <ul class="nav nav-pills nav-fill">
+            <li class="nav-item">
+                <button class="btn nav-link" type="button" @click="clear_sort" >Show all</button>
+            </li>
             <li class="nav-item" v-for="(items, i) in uniq_categories">
-                <a href="#" class="nav-link">{{ uniq_categories[i] }}</a>
+                <button class="btn nav-link" type="button" @click="filtr($event)" :id="uniq_categories[i]">{{ uniq_categories[i] }}</button>
             </li>
         </ul>
 
-        <div class="card-wrapper" id="">
+        <div class="card-wrapper" v-if="sorted.length == 0">
             <div class="card" v-for="(items, i) in list">
                 <img class="card-img-top" :src="list[i].img">
                 <div class="card-body">
@@ -33,24 +36,22 @@
                 </div>
             </div>
         </div>
+        <div class="card-wrapper" v-else>
+            <div class="card" v-for="(items, i) in sorted">
+                <img class="card-img-top" :src="sorted[i].img">
+                <div class="card-body">
+                    <span>Song: <b>{{ sorted[i].title }}</b></span>
+                    <span>Artist: <b>{{ sorted[i].artist }}</b></span>
+                    <span>Categories: <b>{{ sorted[i].category.join(', ') }}</b></span>
+                </div>
+            </div>
+        </div>
 
     </div>
 </div>
 
 <script>
-    function unique(arr) {
-        let result = [];
-
-        for (let str of arr) {
-            if (!result.includes(str)) {
-                result.push(str);
-            }
-        }
-
-        return result;
-    }
-
-    Vue.createApp({
+        Vue.createApp({
         data: () => ({
             list: [
                 {
@@ -96,6 +97,7 @@
                     img: 'img/horse.jpg',
                 },
             ],
+            sorted: [],
         }),
         computed: {
             uniq_categories() {
@@ -103,12 +105,28 @@
                 this.list.forEach(item => {
                     res.push(item.category);
                 });
-                return unique(res.flat(1));
+                return this.find_uniqums(res.flat(1));
             }
         },
         methods: {
-            filtr() {
-
+            clear_sort() {
+                this.sorted.splice(0, this.sorted.length);
+            },
+            find_uniqums(arr) {
+                let result = [];
+                for (let str of arr) {
+                    if (!result.includes(str)) {
+                        result.push(str);
+                    }
+                }
+                return result;
+            },
+            filtr(e) {
+                let goal = e.target.id;
+                this.list.forEach(item => {
+                    this.sorted = this.list.filter(item => item.category.indexOf(goal) > -1);
+                });
+                return this.sorted;
             }
         },
     }).mount(".example");

@@ -19,7 +19,7 @@
 
         <ul class="nav nav-pills nav-fill">
             <li class="nav-item">
-                <button class="btn nav-link" type="button" @click="clear_sort" >Show all</button>
+                <button class="btn nav-link" type="button" @click="filtr($event)" id="all">Show all</button>
             </li>
             <li class="nav-item" v-for="(items, i) in uniq_categories">
                 <button class="btn nav-link" type="button" @click="filtr($event)" :id="uniq_categories[i]">{{ uniq_categories[i] }}</button>
@@ -109,9 +109,6 @@
             }
         },
         methods: {
-            clear_sort() {
-                this.sorted.splice(0, this.sorted.length);
-            },
             find_uniqums(arr) {
                 let result = [];
                 for (let str of arr) {
@@ -123,7 +120,9 @@
             },
             filtr(e) {
                 let goal = e.target.id;
-                this.sorted = this.list.filter(item => item.category.indexOf(goal) > -1);
+                goal === 'all' 
+                    ? this.sorted = []
+                    : this.sorted = this.list.filter(({category}) => category.indexOf(goal) > -1)
                 return this.sorted;
             }
         },

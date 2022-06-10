@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>Homework 2</title>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link href="css/styles.css" rel="stylesheet"/>
+    <script src="js/vue.js"></script>
+
+</head>
+<body>
+<div class="wrapper">
+    <div class="example">
+
+        <h2 class="modal-title">Choose your category</h2>
+
+        <ul class="nav nav-pills nav-fill">
+            <li class="nav-item">
+                <button class="btn nav-link" type="button" @click="filtr($event)" id="all">Show all</button>
+            </li>
+            <li class="nav-item" v-for="(items, i) in uniq_categories">
+                <button class="btn nav-link" type="button" @click="filtr($event)" :id="uniq_categories[i]">{{ uniq_categories[i] }}</button>
+            </li>
+        </ul>
+
+        <div class="card-wrapper" v-if="sorted.length == 0">
+            <div class="card" v-for="(items, i) in list">
+                <img class="card-img-top" :src="list[i].img">
+                <div class="card-body">
+                    <span>Song: <b>{{ list[i].title }}</b></span>
+                    <span>Artist: <b>{{ list[i].artist }}</b></span>
+                    <span>Categories: <b>{{ list[i].category.join(', ') }}</b></span>
+                </div>
+            </div>
+        </div>
+        <div class="card-wrapper" v-else>
+            <div class="card" v-for="(items, i) in sorted">
+                <img class="card-img-top" :src="sorted[i].img">
+                <div class="card-body">
+                    <span>Song: <b>{{ sorted[i].title }}</b></span>
+                    <span>Artist: <b>{{ sorted[i].artist }}</b></span>
+                    <span>Categories: <b>{{ sorted[i].category.join(', ') }}</b></span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+        Vue.createApp({
+        data: () => ({
+            list: [
+                {
+                    id: 0,
+                    title: "Judas",
+                    artist: "Lady Gaga",
+                    category: ["Trending"],
+                    img: 'img/judas.jpg',
+                },
+                {
+                    id: 1,
+                    title: "Paparazzi",
+                    artist: "Lady Gaga",
+                    category: ["Featured", "Genres"],
+                    img: 'img/paparazzi.jpg',
+                },
+                {
+                    id: 2,
+                    title: "Just Dance",
+                    artist: "Lady Gaga",
+                    category: ["Featured", "Trending"],
+                    img: 'img/dance.jpg',
+                },
+                {
+                    id: 3,
+                    title: "Meet Me Halfway",
+                    artist: "The Black Eyed Peas",
+                    category: ["Workout"],
+                    img: 'img/halfway.jpg',
+                },
+                {
+                    id: 4,
+                    title: "Can't Hold Us",
+                    artist: "Macklemore & Ryan Lewis",
+                    category: ["Most Played", "Trending"],
+                    img: 'img/cant.jpg',
+                },
+                {
+                    id: 5,
+                    title: "Dark Horse",
+                    artist: "Katy Perry",
+                    category: ["Most Played", "New Releases"],
+                    img: 'img/horse.jpg',
+                },
+            ],
+            sorted: [],
+        }),
+        computed: {
+            uniq_categories() {
+                let res = [];
+                this.list.forEach(item => {
+                    res.push(item.category);
+                });
+                return this.find_uniqums(res.flat(1));
+            }
+        },
+        methods: {
+            find_uniqums(arr) {
+                let result = [];
+                for (let str of arr) {
+                    if (!result.includes(str)) {
+                        result.push(str);
+                    }
+                }
+                return result;
+            },
+            filtr(e) {
+                let goal = e.target.id;
+                goal === 'all' 
+                    ? this.sorted = []
+                    : this.sorted = this.list.filter(({category}) => category.indexOf(goal) > -1)
+                return this.sorted;
+            }
+        },
+    }).mount(".example");
+</script>
+</body>
+</html>

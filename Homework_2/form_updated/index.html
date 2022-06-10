@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="src/css/bootstrap.min.css">
+    <link rel="stylesheet" href="src/css/style.css">
+    <script src="src/js/vue.js"></script>
+
+    <title>Homework 2</title>
+</head>
+<body>
+<div class="container">
+    <div class="wrapper">
+        <div class="example">
+
+            <form v-if="!done">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="text"
+                           class="example-input form-control"
+                           id="email"
+                           v-model.trim="user.email"
+                           ref="firstInput"
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="text"
+                           class="example-input form-control"
+                           id="phone"
+                           v-model.trim="user.phone"
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="firstName">First name</label>
+                    <input type="text"
+                           class="example-input form-control"
+                           id="firstName"
+                           v-model.trim="user.firstName"
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last name</label>
+                    <input type="text"
+                           class="example-input form-control"
+                           id="lastName"
+                           v-model.trim="user.lastName"
+                    >
+                </div>
+                <div>
+                    <button class="btn-primary btn"
+                            type="button"
+                            @click="addGuest"
+                    >
+                        Add guests
+                    </button>
+                    <div class="form-group" v-for="(guest, i) in guests">
+                        <label for="guestName"
+                               @dblclick="deleteGuest(i)"
+                        >
+                            Guest #{{ i + 1}}
+                        </label>
+                        <input type="text"
+                               class="example-input form-control"
+                               id="guestName"
+                               v-model.trim="guest.name"
+                               ref="guestInput"
+                        >
+                    </div>
+                </div>
+                <hr/>
+                <button class="btn btn-success"
+                        type="button"
+                        :disabled="!isEnabled"
+                        @click="send"
+                >
+                    Send Data
+                </button>
+            </form>
+
+            <div v-else>
+                <h2>Success!</h2>
+                <table class="table table-bordered">
+                    <tr>
+                        <td>Email</td>
+                        <td>{{ user.email }}</td>
+                    </tr>
+                    <tr>
+                        <td>Phone</td>
+                        <td>{{ user.phone }}</td>
+                    </tr>
+                    <tr>
+                        <td>Full name</td>
+                        <td>{{ fullName }}</td>
+                    </tr>
+                    <tr>
+                        <td>Guests</td>
+                        <td>
+                            <ul class="list-group">
+                                <li class="list-group-item"
+                                    v-for="guest in guests"
+                                >
+                                    {{ guest.name }}
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    Vue.createApp({
+        data() {
+            return {
+                user: {
+                    email: '',
+                    phone: '',
+                    firstName: '',
+                    lastName: '',
+                },
+                done: false,
+                guests: [],
+            };
+        },
+        computed: {
+            fullName() {
+                return `${this.user.firstName} ${this.user.lastName}`.trim();
+            },
+            isEnabled() {
+                return Object.values(this.user).every(val => val !== '');
+            },
+        },
+        methods: {
+            send() {
+                if (this.isEnabled) {
+                    this.guests = this.guests.filter( guest => guest.name !== '' );
+                    this.done = true;
+                }
+            },
+            addGuest() {
+                this.guests.push({ name: '' });
+
+                this.$nextTick(() => {
+                    let i = this.$refs.guestInput.length - 1;
+                    this.$refs.guestInput[i].focus();
+                });
+
+            },
+            deleteGuest(i) {
+                this.guests.splice(i, 1);
+            },
+        },
+        mounted() {
+            this.$refs.firstInput.focus();
+        },
+        updated() {
+            //массив из-за одинакового имени ref-a
+
+            // let i = this.$refs.guestInput.length - 1;
+            // this.$refs.guestInput[i].focus();
+        }
+    }).mount('.example');
+</script>
+
+</body>
+</html>

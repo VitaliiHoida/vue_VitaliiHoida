@@ -1,0 +1,16 @@
+.container {
+    padding: 50px 100px;
+}
+
+.form-group {
+    padding: 0 0 15px 0;
+}
+
+label {
+    font-weight: 500;
+    margin: 0 0 5px 0;
+}
+
+.btn-primary {
+    margin: 10px 0 0 0;
+}

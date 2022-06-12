@@ -14,7 +14,25 @@ label{
 .value{
 	padding: 10px;
 	border-radius: 10px;
+}
 
+.ico{
+    margin: 0 0 0 15px;
+    position: relative;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.check{
+    background-image: url('../img/check.png');
+}
+
+.cancel{
+    background-image: url('../img/cancel.png');
 }
 
 @font-face {

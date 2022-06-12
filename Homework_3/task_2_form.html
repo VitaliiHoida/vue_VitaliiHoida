@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Homework 3</title>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="js/vue.js"></script>
+</head>
+<body>
+<div class="wrapper">
+    <div class="sample">
+        <form v-if="!result">
+            <div class="progress">
+                <div class="progress-bar" :style="width"></div>
+            </div>
+            <div>
+                <div class="form-group" v-for="(item, i) in info">
+                    <label> {{ item.name }}
+                        <span class="ico"
+                              ref="ico"
+                              :class="{check : validated[i], cancel: !validated[i]}"
+                              v-show="iconShow[i] != null"
+                        >
+                        </span>
+                    </label>
+                    <input type="text"
+                           class="form-control"
+                           @input="validation($event, i)">
+                </div>
+            </div>
+            <button class="btn btn-primary"
+                    type="button"
+                    @click="send"
+                    :disabled="!enabled"
+                >
+                Send Data
+            </button>
+        </form>
+        <div v-else>
+            <table class="table table-bordered">
+                <tr v-for="item in info">
+                    <td>{{item.name}}</td>
+                    <td>{{item.value}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    Vue.createApp({
+        data: () => ({
+            info: [
+                {
+                    name: 'Name',
+                    value: '',
+                    pattern: /^[a-zA-Z ]{2,30}$/
+                },
+                {
+                    name: 'Phone',
+                    value: '',
+                    pattern: /^[0-9]{7,14}$/
+                },
+                {
+                    name: 'Email',
+                    value: '',
+                    pattern: /.+/
+                },
+                {
+                    name: 'Some Field 1',
+                    value: '',
+                    pattern: /.+/
+                },
+                {
+                    name: 'Some Field 2',
+                    value: '',
+                    pattern: /.+/
+                }
+            ],
+			validated:[],
+            result: false,
+            iconShow: [],
+        }),
+        computed: {
+			pr_max(){
+				return this.info.length;
+			},
+			pr_value(){
+				return this.validated.length;
+			},
+			width(){
+				let w = ( this.pr_value / this.pr_max ) * 100;
+
+				if(w > 100){
+					w = 100;
+				}
+				else if(w < 0){
+					w = 0;
+				}
+				return {
+					width: w +'%'
+				}
+			},
+            enabled(){
+                return this.pr_max === this.pr_value;
+            }
+		},
+		methods:{
+			validation(e ,i) {
+				let res = e.target.value;
+				if(this.info[i].pattern.test(res)){
+					this.validated[i] = this.info[i].pattern.test(res);
+                    this.info[i].value = res;
+                    this.iconShow[i] = true;
+				} else {
+                    this.validated.splice(i, 1);
+                    this.iconShow[i] = false;
+                }
+
+			},
+            send(){
+
+                this.result = !this.result;
+            }
+		},
+    }).mount('.sample');
+</script>
+</body>
+</html>

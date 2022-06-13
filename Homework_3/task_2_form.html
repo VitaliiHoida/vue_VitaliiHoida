@@ -23,8 +23,8 @@
                     <label> {{ item.name }}
                         <span class="ico"
                               ref="ico"
-                              :class="{check : validated[i], cancel: !validated[i]}"
-                              v-show="iconShow[i] != null"
+                              :class="{check : item.validated, cancel: !item.validated}"
+                              v-show="item.fieldChange != null"
                         >
                         </span>
                     </label>
@@ -44,8 +44,8 @@
         <div v-else>
             <table class="table table-bordered">
                 <tr v-for="item in info">
-                    <td>{{item.name}}</td>
-                    <td>{{item.value}}</td>
+                    <td> {{ item.name }} </td>
+                    <td> {{ item.value }} </td>
                 </tr>
             </table>
         </div>
@@ -81,26 +81,18 @@
                     pattern: /.+/
                 }
             ],
-			validated:[],
             result: false,
-            iconShow: [],
         }),
         computed: {
 			pr_max(){
 				return this.info.length;
 			},
 			pr_value(){
-				return this.validated.length;
+				return this.info.filter( item => item.validated === true).length;
 			},
 			width(){
 				let w = ( this.pr_value / this.pr_max ) * 100;
 
-				if(w > 100){
-					w = 100;
-				}
-				else if(w < 0){
-					w = 0;
-				}
 				return {
 					width: w +'%'
 				}
@@ -111,22 +103,25 @@
 		},
 		methods:{
 			validation(e ,i) {
+                this.info[i].fieldChange = true;
 				let res = e.target.value;
 				if(this.info[i].pattern.test(res)){
-					this.validated[i] = this.info[i].pattern.test(res);
+					this.info[i].validated = true;
                     this.info[i].value = res;
-                    this.iconShow[i] = true;
 				} else {
-                    this.validated.splice(i, 1);
-                    this.iconShow[i] = false;
+                    this.info[i].validated = false;
                 }
-
 			},
             send(){
-
                 this.result = !this.result;
             }
 		},
+        created(){
+            this.info.forEach(item => {
+                item.validated = null;
+                item.fieldChange = null;
+            });
+        },
     }).mount('.sample');
 </script>
 </body>

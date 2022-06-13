@@ -19,30 +19,20 @@
 
         <ul class="nav nav-pills nav-fill">
             <li class="nav-item">
-                <button class="btn nav-link" type="button" @click="filtr($event)" id="all">Show all</button>
+                <button class="btn nav-link" type="button" @click="changeTab(null)">Show all</button>
             </li>
-            <li class="nav-item" v-for="(items, i) in uniq_categories">
-                <button class="btn nav-link" type="button" @click="filtr($event)" :id="uniq_categories[i]">{{ uniq_categories[i] }}</button>
+            <li class="nav-item" v-for="item in tabs">
+                <button class="btn nav-link" type="button" @click="changeTab(item)" :key="item">{{ item }}</button>
             </li>
         </ul>
 
-        <div class="card-wrapper" v-if="sorted.length == 0">
-            <div class="card" v-for="(items, i) in list">
-                <img class="card-img-top" :src="list[i].img">
+        <div class="card-wrapper">
+            <div class="card" v-for="item in sortedItems">
+                <img class="card-img-top" :src="item.img">
                 <div class="card-body">
-                    <span>Song: <b>{{ list[i].title }}</b></span>
-                    <span>Artist: <b>{{ list[i].artist }}</b></span>
-                    <span>Categories: <b>{{ list[i].category.join(', ') }}</b></span>
-                </div>
-            </div>
-        </div>
-        <div class="card-wrapper" v-else>
-            <div class="card" v-for="(items, i) in sorted">
-                <img class="card-img-top" :src="sorted[i].img">
-                <div class="card-body">
-                    <span>Song: <b>{{ sorted[i].title }}</b></span>
-                    <span>Artist: <b>{{ sorted[i].artist }}</b></span>
-                    <span>Categories: <b>{{ sorted[i].category.join(', ') }}</b></span>
+                    <span>Song: <b>{{ item.title }}</b></span>
+                    <span>Artist: <b>{{ item.artist }}</b></span>
+                    <span>Categories: <b>{{ item.category.join(', ') }}</b></span>
                 </div>
             </div>
         </div>
@@ -97,15 +87,19 @@
                     img: 'img/horse.jpg',
                 },
             ],
-            sorted: [],
+            activeTab: null,
         }),
         computed: {
-            uniq_categories() {
+            //dynamically find all unique categories via find_uniqums(arr) method
+            tabs() {
                 let res = [];
                 this.list.forEach(item => {
                     res.push(item.category);
                 });
                 return this.find_uniqums(res.flat(1));
+            },
+            sortedItems(){
+                return this.list.filter(item => !this.activeTab || item.category.includes(this.activeTab))
             }
         },
         methods: {
@@ -118,13 +112,9 @@
                 }
                 return result;
             },
-            filtr(e) {
-                let goal = e.target.id;
-                goal === 'all' 
-                    ? this.sorted = []
-                    : this.sorted = this.list.filter(({category}) => category.indexOf(goal) > -1)
-                return this.sorted;
-            }
+            changeTab(tab){
+                this.activeTab = tab;
+            },
         },
     }).mount(".example");
 </script>

@@ -104,8 +104,9 @@
 		methods:{
 			validation(e ,i) {
                 this.info[i].fieldChange = true;
-				let res = e.target.value;
-                this.info[i].validated = this.info[i].pattern.test(res)
+                this.info[i].value = e.target.value;
+                this.info[i].validated = this.info[i].pattern.test(this.info[i].value);
+
 			},
             send(){
                 this.result = !this.result;

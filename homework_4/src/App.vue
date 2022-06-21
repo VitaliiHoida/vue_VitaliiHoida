@@ -15,9 +15,14 @@
         >
         </app-group>
       </div>
+      <app-drop :values="countries" 
+                :shown="shown"
+                @choose-drop="choose($event)"
+                @show-drop="showDrop">
+      </app-drop>
       <app-button :enabled="enabled"
-                  @sendForm="send">
-
+                  @sendForm="send"
+                  >
       </app-button>
     </form>
     <div v-else>
@@ -26,8 +31,13 @@
           <td>{{ item.name }}</td>
           <td>{{ item.value }}</td>
         </tr>
+        <tr v-if="country">
+          <td>Country</td>
+          <td> {{country}} </td>
+        </tr>
       </table>
     </div>
+    
   </div>
 </template>
 
@@ -35,6 +45,7 @@
 import AppGroup from "./components/AppGroup.vue";
 import AppProgress from "./components/AppProgress.vue";
 import AppButton from "./components/AppButton.vue";
+import AppDrop from "./components/AppDrop.vue";
 
 export default {
   name: "App",
@@ -42,6 +53,7 @@ export default {
     AppGroup,
     AppProgress,
     AppButton,
+    AppDrop,
   },
   data: () => ({
     info: [
@@ -72,6 +84,10 @@ export default {
       },
     ],
     result: false,
+    /*drop-down*/
+    countries: ['Ukraine', 'Great Britain', 'Poland', 'Orkostan'],
+    country: '',
+    shown: false,
   }),
   computed: {
     enabled(){
@@ -85,6 +101,16 @@ export default {
     },
     send(){
       this.result = !this.result;
+    },
+    /* drop-down*/
+    choose(e){
+      this.country = e;
+    },
+    showDrop(){
+      this.shown = ! this.shown;
+    },
+    closeDropdown(){
+      this.shown = false;
     }
   },
   created() {

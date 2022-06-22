@@ -12,7 +12,6 @@
         @click.stop="show"
         :value="default_item"
       />
-      <i class="fa fa-angle-down" aria-hidden="true"></i>
       <ul class="droplist">
         <li v-for="(item, i) in values" :key="item" @click="choose(i)" :class="{'hidden' : item == this.default_item}">
           <span> {{ item }} </span>

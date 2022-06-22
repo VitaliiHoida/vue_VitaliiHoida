@@ -3,17 +3,18 @@
        :class="{ 'open-dropdown': shown }" 
        >
     <div class="input-wrapper">
+      <label>Select Your Country (optional)</label>
+<!--  @click.stop - запрещает ивент клика по документу для сворачивания списка    -->
       <input
         type="text"
-        placeholder="Select Your Country (optional)"
         class="custom-select"
         readonly="readonly"
-        @click="show"
-        :value="value"
+        @click.stop="show"
+        :value="default_item"
       />
       <i class="fa fa-angle-down" aria-hidden="true"></i>
       <ul class="droplist">
-        <li v-for="(item, i) in values" :key="item" @click="choose(i)">
+        <li v-for="(item, i) in values" :key="item" @click="choose(i)" :class="{'hidden' : item == this.default_item}">
           <span> {{ item }} </span>
         </li>
       </ul>
@@ -24,23 +25,18 @@
 <script>
 export default {
   props: {
-    default: String,
+    default_item: String,
     values: Array,
     shown: Boolean,
-  },
-  data() {
-    return {
-      value: "",
-    };
   },
   methods: {
     show() {
       this.$emit("show-drop");
     },
     choose(i) {
-      this.value = this.values[i];
+      let value = this.values[i];
       this.$emit("show-drop");
-      this.$emit("choose-drop", this.value);
+      this.$emit("choose-drop", value);
     },
   },
 };
@@ -49,30 +45,31 @@ export default {
 <style>
 .custom-select-wrapper .input-wrapper {
   background-color: #fff;
-  border: 1px solid #00000052;
-  border-radius: 6px 6px 0 0;
-  padding: 0 10px;
 }
 
 .custom-select-wrapper .input-wrapper input[type="text"] {
   border: 0;
-  padding: 5px;
+  padding: 1px 5px;
   cursor: pointer;
   outline: none;
   width: 100%;
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem;
+}
+
+.custom-select-wrapper.open-dropdown ul {
+  border: 1px solid #ced4da;
 }
 
 .custom-select-wrapper ul {
-  z-index: 1;
-  border: 1px solid #00000052;
-  border-top: none;
+  border: none;
   list-style: none;
   background-color: #fff;
-  border-radius: 0 0 6px 6px;
+  border-radius: 0.375rem;
   padding: 0;
   height: 0;
   overflow: hidden;
-  margin: 0;
+  margin: 5px 0 0 0;
   transition: 0.1s ease-out;
   position: absolute;
   width: auto;
@@ -83,11 +80,11 @@ export default {
 .custom-select-wrapper ul li {
   line-height: 24px;
   font-size: 24px;
-  padding: 12px 15px;
+  padding: 7px 15px;
 }
 
 .custom-select-wrapper ul li:hover {
-  background-color: #0a58ca;
+  background-color: #0d6efd;
 }
 
 .custom-select-wrapper.open-dropdown ul {
@@ -98,7 +95,6 @@ export default {
 .custom-select-wrapper {
   position: relative;
   cursor: pointer;
-  margin: 10px 0;
   width: 50%;
 }
 
@@ -109,5 +105,9 @@ export default {
 
 .custom-select-wrapper i {
   transition: 0.9s;
+}
+
+li.hidden{
+  display:none;
 }
 </style>

@@ -15,7 +15,9 @@
         >
         </app-group>
       </div>
-      <app-drop :values="countries" 
+      <div class="row-line">
+      <app-drop :values="dropArr"
+                :default_item="def"
                 :shown="shown"
                 @choose-drop="choose($event)"
                 @show-drop="showDrop">
@@ -24,6 +26,7 @@
                   @sendForm="send"
                   >
       </app-button>
+      </div>
     </form>
     <div v-else>
       <table class="table table-bordered">
@@ -85,9 +88,11 @@ export default {
     ],
     result: false,
     /*drop-down*/
-    countries: ['Ukraine', 'Great Britain', 'Poland', 'Orkostan'],
-    country: '',
+    dropArr: ['Ukraine', 'Great Britain', 'Poland', 'Orkostan'],
+    def: 'Ukraine',
     shown: false,
+    /* Значение, в которое записывается выбранный элемент dropdown, для наглядности */
+    country: '',
   }),
   computed: {
     enabled(){
@@ -104,12 +109,13 @@ export default {
     },
     /* drop-down*/
     choose(e){
+      this.def = e;
       this.country = e;
     },
     showDrop(){
       this.shown = ! this.shown;
     },
-    closeDropdown(){
+    hide(){
       this.shown = false;
     }
   },
@@ -117,6 +123,8 @@ export default {
     this.info.forEach((item) => {
       item.validated = item.pattern.test(item.value);
     });
+    /*сворачиваем дропдаун при клике в любой точке*/
+    document.addEventListener('click', this.hide);
   },
 };
 </script>
@@ -130,5 +138,20 @@ export default {
   padding: 15px;
   max-width: 900px;
   margin: 0 auto;
+}
+
+.row-line{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  margin: 0;
+  padding: 0;
+  flex-direction: row;
+  align-items: end;
+}
+
+.row-line:only-child{
+  flex: 1 0;
+  width: 50%;
 }
 </style>

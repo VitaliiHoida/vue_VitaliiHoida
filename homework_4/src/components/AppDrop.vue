@@ -97,15 +97,6 @@ export default {
   width: 50%;
 }
 
-.custom-select-wrapper.open-dropdown i {
-  transform: rotate(180deg);
-  transition: 0.9s;
-}
-
-.custom-select-wrapper i {
-  transition: 0.9s;
-}
-
 li.hidden{
   display:none;
 }

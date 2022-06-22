@@ -3,7 +3,7 @@
        :class="{ 'open-dropdown': shown }" 
        >
     <div class="input-wrapper">
-      <label>Select Your Country (optional)</label>
+      <label> {{ lbl }} </label>
 <!--  @click.stop - запрещает ивент клика по документу для сворачивания списка    -->
       <input
         type="text"
@@ -27,6 +27,7 @@ export default {
     default_item: String,
     values: Array,
     shown: Boolean,
+    lbl: String,
   },
   methods: {
     show() {

@@ -19,6 +19,7 @@
       <app-drop :values="dropArr"
                 :default_item="def"
                 :shown="shown"
+                :lbl="lbl"
                 @choose-drop="choose($event)"
                 @show-drop="showDrop">
       </app-drop>
@@ -91,6 +92,7 @@ export default {
     dropArr: ['Ukraine', 'Great Britain', 'Poland', 'Orkostan'],
     def: 'Ukraine',
     shown: false,
+    lbl: 'Select Your Country (optional)',
     /* Значение, в которое записывается выбранный элемент dropdown, для наглядности */
     country: '',
   }),

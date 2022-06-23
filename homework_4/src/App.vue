@@ -32,9 +32,10 @@
           <td>{{ item.name }}</td>
           <td>{{ item.value }}</td>
         </tr>
-        <tr v-if="country">
+        <tr>
           <td>Country</td>
-          <td> {{country}} </td>
+          <td v-if="country"> {{country}} </td>
+          <td v-else> {{def}} </td>
         </tr>
       </table>
     </div>

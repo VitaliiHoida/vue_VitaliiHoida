@@ -1,9 +1,7 @@
 <template>
   <div class="wrapper">
     <form v-if="!result">
-      <app-progress :max="info.length"
-                    :val="info.filter((item) => item.validated === true).length"
-      >
+      <app-progress :val="progrWidth">
       </app-progress>
       <div>
         <app-group :key="i"
@@ -18,10 +16,9 @@
       <div class="row-line">
       <app-drop :values="dropArr"
                 :default_item="def"
-                :shown="shown"
                 :lbl="lbl"
                 @choose-drop="choose($event)"
-                @show-drop="showDrop">
+               >
       </app-drop>
       <app-button :enabled="enabled"
                   @sendForm="send"
@@ -91,7 +88,6 @@ export default {
     /*drop-down*/
     dropArr: ['Ukraine', 'Great Britain', 'Poland', 'Orkostan'],
     def: 'Ukraine',
-    shown: false,
     lbl: 'Select Your Country (optional)',
     /* Значение, в которое записывается выбранный элемент dropdown, для наглядности */
     country: '',
@@ -99,6 +95,9 @@ export default {
   computed: {
     enabled(){
       return this.info.length === this.info.filter((item) => item.validated === true).length;
+    },
+    progrWidth(){
+      return (this.info.filter((item) => item.validated === true).length/this.info.length)*100;
     }
   },
   methods: {
@@ -114,19 +113,13 @@ export default {
       this.def = e;
       this.country = e;
     },
-    showDrop(){
-      this.shown = ! this.shown;
-    },
-    hide(){
-      this.shown = false;
-    }
+
   },
   created() {
     this.info.forEach((item) => {
       item.validated = item.pattern.test(item.value);
     });
-    /*сворачиваем дропдаун при клике в любой точке*/
-    document.addEventListener('click', this.hide);
+
   },
 };
 </script>

@@ -13,7 +13,7 @@
         :value="default_item"
       />
       <ul class="droplist">
-        <li v-for="(item, i) in values" :key="item" @click="choose(i)" :class="{'hidden' : item == this.default_item}">
+        <li v-for="item in values" :key="item" @click="choose(item)" v-show="item !== default_item">
           <span> {{ item }} </span>
         </li>
       </ul>
@@ -26,19 +26,30 @@ export default {
   props: {
     default_item: String,
     values: Array,
-    shown: Boolean,
     lbl: String,
   },
+  data (){
+    return {
+      shown: false,
+    }
+  },
   methods: {
-    show() {
-      this.$emit("show-drop");
-    },
-    choose(i) {
-      let value = this.values[i];
-      this.$emit("show-drop");
+    choose(e) {
+      let value = e;
+      this.show();
       this.$emit("choose-drop", value);
     },
+    show(){
+      this.shown = ! this.shown;
+    },
+    hide(){
+      this.shown = false;
+    }
   },
+  created() {
+    /*сворачиваем дропдаун при клике в любой точке*/
+    document.addEventListener('click', this.hide);
+  }
 };
 </script>
 
@@ -98,7 +109,4 @@ export default {
   width: 50%;
 }
 
-li.hidden{
-  display:none;
-}
 </style>

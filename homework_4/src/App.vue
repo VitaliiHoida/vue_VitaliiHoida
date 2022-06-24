@@ -15,7 +15,7 @@
       </div>
       <div class="row-line">
       <app-drop :values="dropArr"
-                :default_item="def"
+                :default_item="country"
                 :lbl="lbl"
                 @choose-drop="choose($event)"
                >
@@ -34,8 +34,7 @@
         </tr>
         <tr>
           <td>Country</td>
-          <td v-if="country"> {{country}} </td>
-          <td v-else> {{def}} </td>
+          <td> {{country}} </td>
         </tr>
       </table>
     </div>
@@ -88,10 +87,9 @@ export default {
     result: false,
     /*drop-down*/
     dropArr: ['Ukraine', 'Great Britain', 'Poland', 'Orkostan'],
-    def: 'Ukraine',
     lbl: 'Select Your Country (optional)',
-    /* Значение, в которое записывается выбранный элемент dropdown, для наглядности */
-    country: '',
+    /* Значение, в которое записывается выбранный элемент dropdown + по умолчанию*/
+    country: 'Ukraine',
   }),
   computed: {
     enabled(){
@@ -111,7 +109,6 @@ export default {
     },
     /* drop-down*/
     choose(e){
-      this.def = e;
       this.country = e;
     },
 

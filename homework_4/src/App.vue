@@ -17,7 +17,7 @@
       <app-drop :values="dropArr"
                 :default_item="country"
                 :lbl="lbl"
-                @choose-drop="choose($event)"
+                @choose-drop="choose"
                >
       </app-drop>
       <app-button :enabled="enabled"

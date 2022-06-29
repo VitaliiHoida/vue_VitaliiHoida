@@ -1,8 +1,8 @@
 <template>
-  <transition name="fade" appear>
+  <transition name="fade">
     <div class="modala-overlay" v-if="isActive" ref="overlay"></div>
   </transition>
-  <transition name="pop" appear>
+  <transition name="pop">
     <div class="modala" v-if="isActive">
       <div class="modal-content">
         <div class="modal-header">
@@ -27,6 +27,7 @@ export default {
   props: {
     isActive: Boolean,
   },
+  emits:['closeModal'],
   methods: {
     close() {
       this.$emit('closeModal');
@@ -128,7 +129,7 @@ button:focus {
   transition: opacity 0.4s linear;
 }
 
-.fade-enter,
+.fade-enter-from,
 .fade-leave-to {
   opacity: 0;
 }
@@ -138,7 +139,7 @@ button:focus {
   transition: transform 0.4s cubic-bezier(0.5, 0, 0.5, 1), opacity 0.4s linear;
 }
 
-.pop-enter,
+.pop-enter-from,
 .pop-leave-to {
   opacity: 0;
   transform: scale(0.3) translateY(-50%);

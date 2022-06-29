@@ -2,18 +2,23 @@
   <div class="form-group">
     <label>
       {{ name }}
-      <span
-        class="ico"
-        ref="ico"
-        :class="{ check: validated, cancel: !validated }"
-        v-if="activated"
-      >
-      </span>
+      <transition name="icon" mode="out-in">
+        <span
+          class="ico"
+          ref="ico"
+          :class='clas'
+          v-if="activated"
+          :key="clas"
+        >
+        </span>
+      </transition>
     </label>
-    <input class="form-control" 
-           type="text"
-           @input="onInputComp" 
-           :value="value"/>
+    <input
+      class="form-control"
+      type="text"
+      @input="onInputComp"
+      :value="value"
+    />
   </div>
 </template>
 
@@ -24,23 +29,28 @@ export default {
     name: String,
     validated: Boolean,
   },
-  data(){
+  data() {
     return {
-      activated: this.value !== '',  
-      }
-    },
-  methods:{
-        onInputComp(e){
-          this.activated = true;
-          this.$emit('field-input', e.target.value);
-			}
+      activated: this.value !== "",
+    };
+  },
+  computed:{
+    clas(){
+      return this.validated ? 'check' : 'cancel';
     }
+  },
+  methods: {
+    onInputComp(e) {
+      this.activated = true;
+      this.$emit("field-input", e.target.value);
+    },
+  },
 };
 </script>
 
 <style>
-.form-group{
-    margin: 10px 0;
+.form-group {
+  margin: 10px 0;
 }
 
 .ico {
@@ -60,5 +70,21 @@ export default {
 
 .cancel {
   background-image: url("@/assets/cancel.png");
+}
+
+.icon-enter-from {
+  opacity: 0;
+}
+
+.icon-enter-active {
+  transition: opacity 0.5s;
+}
+
+.icon-leave-active {
+  transition: opacity 0.5s;
+}
+
+.icon-leave-to {
+  opacity: 0;
 }
 </style>

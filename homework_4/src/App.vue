@@ -1,43 +1,59 @@
 <template>
   <div class="wrapper">
-    <form v-if="!result">
-      <app-progress :val="progrWidth">
-      </app-progress>
+    <form v-if="!successPage">
+      <app-progress :val="progrWidth"> </app-progress>
       <div>
-        <app-group :key="i"
-                   v-for="(item, i) in info"
-                   :value="item.value"
-                   :name="item.name"
-                   :validated="item.validated"
-                   @field-input="onInputApp(i, $event)"
+        <app-group
+          :key="i"
+          v-for="(item, i) in info"
+          :value="item.value"
+          :name="item.name"
+          :validated="item.validated"
+          @field-input="onInputApp(i, $event)"
         >
         </app-group>
       </div>
       <div class="row-line">
-      <app-drop :values="dropArr"
-                :default_item="country"
-                :lbl="lbl"
-                @choose-drop="choose"
-               >
-      </app-drop>
-      <app-button :enabled="enabled"
-                  @sendForm="send"
-                  >
-      </app-button>
+        <app-drop
+          :values="dropArr"
+          :default_item="country"
+          :lbl="lbl"
+          @choose-drop="choose"
+        >
+        </app-drop>
+        <app-button :enabled="enabled" @send-form="send" @click="open">
+        </app-button>
       </div>
     </form>
     <div v-else>
-      <table class="table table-bordered">
-        <tr v-for="item in info" :key="item">
-          <td>{{ item.name }}</td>
-          <td>{{ item.value }}</td>
-        </tr>
-        <tr>
-          <td>Country</td>
-          <td> {{country}} </td>
-        </tr>
-      </table>
+      <h1>Great job, dude!</h1>
     </div>
+    
+      <app-modal :isActive="show" @closeModal="close">
+        <template #header><h2>Results</h2></template>
+        <template #default>
+          <div>
+            <table class="table table-bordered">
+              <tr v-for="item in info" :key="item">
+                <td>{{ item.name }}</td>
+                <td>{{ item.value }}</td>
+              </tr>
+              <tr>
+                <td>Country</td>
+                <td>{{ country }}</td>
+              </tr>
+            </table>
+          </div>
+        </template>
+        <template #footer>
+          <button class="btn btn-secondary" type="button" @click="close">
+            CANCEL
+          </button>
+          <button class="btn btn-success" type="button" @click="success">
+            OK
+          </button>
+        </template>
+      </app-modal>
     
   </div>
 </template>
@@ -47,6 +63,7 @@ import AppGroup from "./components/AppGroup.vue";
 import AppProgress from "./components/AppProgress.vue";
 import AppButton from "./components/AppButton.vue";
 import AppDrop from "./components/AppDrop.vue";
+import AppModal from "./components/AppModal.vue";
 
 export default {
   name: "App",
@@ -55,6 +72,7 @@ export default {
     AppProgress,
     AppButton,
     AppDrop,
+    AppModal,
   },
   data: () => ({
     info: [
@@ -74,50 +92,68 @@ export default {
         pattern: /.+/,
       },
       {
-        name: "Some Field 1",
+        name: "Gender",
         value: "",
-        pattern: /.+/,
+        pattern: /^[a-zA-Z ]{3,6}$/,
       },
       {
-        name: "Some Field 2",
+        name: "Age",
         value: "",
-        pattern: /.+/,
+        pattern: /^[0-9]{1,3}$/,
       },
     ],
     result: false,
+    successPage: false,
     /*drop-down*/
-    dropArr: ['Ukraine', 'Great Britain', 'Poland', 'Orkostan'],
-    lbl: 'Select Your Country (optional)',
+    dropArr: ["Ukraine", "Great Britain", "Poland", "Orkostan"],
+    lbl: "Select Your Country (optional)",
     /* Значение, в которое записывается выбранный элемент dropdown + по умолчанию*/
-    country: 'Ukraine',
+    country: "Ukraine",
+    show: false,
   }),
   computed: {
-    enabled(){
-      return this.info.length === this.info.filter((item) => item.validated === true).length;
+    enabled() {
+      return (
+        this.info.length ===
+        this.info.filter((item) => item.validated === true).length
+      );
     },
-    progrWidth(){
-      return (this.info.filter((item) => item.validated === true).length/this.info.length)*100;
-    }
+    progrWidth() {
+      return (
+        (this.info.filter((item) => item.validated === true).length /
+          this.info.length) *
+        100
+      );
+    },
   },
   methods: {
     onInputApp(i, value) {
       this.info[i].value = value;
       this.info[i].validated = this.info[i].pattern.test(this.info[i].value);
     },
-    send(){
+    send() {
       this.result = !this.result;
     },
     /* drop-down*/
-    choose(e){
+    choose(e) {
       this.country = e;
     },
-
+    /* modal */
+    open() {
+      this.show = !this.show;
+    },
+    close() {
+      this.show = false;
+    },
+    success() {
+      this.show = false;
+      this.successPage = !this.successPage;
+    },
   },
   created() {
     this.info.forEach((item) => {
       item.validated = item.pattern.test(item.value);
     });
-
   },
 };
 </script>
@@ -133,7 +169,7 @@ export default {
   margin: 0 auto;
 }
 
-.row-line{
+.row-line {
   display: flex;
   justify-content: space-between;
   flex-wrap: nowrap;
@@ -143,8 +179,14 @@ export default {
   align-items: end;
 }
 
-.row-line:only-child{
+.row-line:only-child {
   flex: 1 0;
   width: 50%;
 }
+
+.btn {
+  text-transform: uppercase;
+}
+
+
 </style>

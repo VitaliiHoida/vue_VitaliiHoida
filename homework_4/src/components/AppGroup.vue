@@ -2,13 +2,17 @@
   <div class="form-group">
     <label>
       {{ name }}
-      <transition name="icon" mode="out-in">
+      <transition             
+        mode="out-in"
+        enter-active-class="animate__animated animate__fadeIn"
+        leave-active-class="animate__animated animate__flipOutY"
+      >
         <span
           class="ico"
           ref="ico"
-          :class='clas'
+          :class="iconClass"
           v-if="activated"
-          :key="clas"
+          :key="iconClass"
         >
         </span>
       </transition>
@@ -34,10 +38,10 @@ export default {
       activated: this.value !== "",
     };
   },
-  computed:{
-    clas(){
-      return this.validated ? 'check' : 'cancel';
-    }
+  computed: {
+    iconClass() {
+      return this.validated ? "check" : "cancel";
+    },
   },
   methods: {
     onInputComp(e) {
@@ -70,21 +74,5 @@ export default {
 
 .cancel {
   background-image: url("@/assets/cancel.png");
-}
-
-.icon-enter-from {
-  opacity: 0;
-}
-
-.icon-enter-active {
-  transition: opacity 0.5s;
-}
-
-.icon-leave-active {
-  transition: opacity 0.5s;
-}
-
-.icon-leave-to {
-  opacity: 0;
 }
 </style>

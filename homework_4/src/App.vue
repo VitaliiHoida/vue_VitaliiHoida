@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import 'animate.css';
 import AppGroup from "./components/AppGroup.vue";
 import AppProgress from "./components/AppProgress.vue";
 import AppButton from "./components/AppButton.vue";

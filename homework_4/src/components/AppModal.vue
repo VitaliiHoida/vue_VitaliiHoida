@@ -1,8 +1,10 @@
 <template>
-  <transition name="fade">
+  <transition enter-active-class="animate__animated animate__lightSpeedInRight"
+              leave-active-class="animate__animated animate__lightSpeedOutLeft">
     <div class="modala-overlay" v-if="isActive" ref="overlay"></div>
   </transition>
-  <transition name="pop">
+  <transition enter-active-class="animate__animated animate__backInDown"
+              leave-active-class="animate__animated animate__backOutDown">
     <div class="modala" v-if="isActive">
       <div class="modal-content">
         <div class="modal-header">
@@ -121,27 +123,5 @@ button.close {
 button:focus {
   outline: 1px dotted;
   outline: 5px auto -webkit-focus-ring-color !important;
-}
-
-/* ---------------------------------- */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.4s linear;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.pop-enter-active,
-.pop-leave-active {
-  transition: transform 0.4s cubic-bezier(0.5, 0, 0.5, 1), opacity 0.4s linear;
-}
-
-.pop-enter-from,
-.pop-leave-to {
-  opacity: 0;
-  transform: scale(0.3) translateY(-50%);
 }
 </style>

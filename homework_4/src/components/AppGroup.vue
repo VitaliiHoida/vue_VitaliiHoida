@@ -2,18 +2,27 @@
   <div class="form-group">
     <label>
       {{ name }}
-      <span
-        class="ico"
-        ref="ico"
-        :class="{ check: validated, cancel: !validated }"
-        v-if="activated"
+      <transition             
+        mode="out-in"
+        enter-active-class="animate__animated animate__fadeIn"
+        leave-active-class="animate__animated animate__flipOutY"
       >
-      </span>
+        <span
+          class="ico"
+          ref="ico"
+          :class="iconClass"
+          v-if="activated"
+          :key="iconClass"
+        >
+        </span>
+      </transition>
     </label>
-    <input class="form-control" 
-           type="text"
-           @input="onInputComp" 
-           :value="value"/>
+    <input
+      class="form-control"
+      type="text"
+      @input="onInputComp"
+      :value="value"
+    />
   </div>
 </template>
 
@@ -24,23 +33,28 @@ export default {
     name: String,
     validated: Boolean,
   },
-  data(){
+  data() {
     return {
-      activated: this.value !== '',  
-      }
+      activated: this.value !== "",
+    };
+  },
+  computed: {
+    iconClass() {
+      return this.validated ? "check" : "cancel";
     },
-  methods:{
-        onInputComp(e){
-          this.activated = true;
-          this.$emit('field-input', e.target.value);
-			}
-    }
+  },
+  methods: {
+    onInputComp(e) {
+      this.activated = true;
+      this.$emit("field-input", e.target.value);
+    },
+  },
 };
 </script>
 
 <style>
-.form-group{
-    margin: 10px 0;
+.form-group {
+  margin: 10px 0;
 }
 
 .ico {

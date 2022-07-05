@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <button type="button" class="btn btn-primary" @click="modalOpen = !modalOpen">Новая задача</button>
-    <app-task v-for="(item, i) in defaultData"
+    <app-task v-for="(item, i) in localData"
               :key="item.title + i"
               :title="item.title"
               :tag="item.tag"
@@ -10,13 +10,14 @@
               :done="item.done">
     </app-task>
     <app-modal :is-active="modalOpen"
-                @close-modal="close">
+               @close-modal="closeModal">
       <input ref="input" placeholder="Новая задача" type="text"/>
       <textarea placeholder="Описание"></textarea>
       <app-dropdown :values="categories"
                     :default_item="categories[0].content"
-
+                    @choose-data="chooseDrop"
       ></app-dropdown>
+      <button type="button" class="btn btn-success" @click="addTask">Добавить</button>
     </app-modal>
   </div>
 </template>
@@ -90,14 +91,15 @@ export default {
     newData:{
       title:'',
       description:'',
-      category: {},
-    }
+      tag: {},
+    },
+    localData: null,
   }),
   computed:{
     categories(){
       const arr = [];
 
-      this.defaultData.forEach(item => {
+      this.localData?.forEach(item => {
         if (arr.findIndex(obj => obj.id === item.tag.id) === -1){
           arr.push(item.tag);
         }
@@ -106,13 +108,28 @@ export default {
     }
   },
   methods: {
-    close(){
+    closeModal(){
       this.modalOpen = false;
+    },
+    saveData(){
+      localStorage.setItem('localData', JSON.stringify(this.localData));
+    },
+    addTask(){
+      this.localData.push(this.newData);
+    },
+    chooseDrop(val){
+      this.newData.tag = val;
+    }
+  },
+  watch:{
+    'localData.length'(){
+      this.saveData();
     }
   },
   created (){
     this.newData.category = this.categories[0];
-  }
+    this.localData = localStorage.getItem('localData') ? JSON.parse(localStorage.getItem('localData')) : this.defaultData;
+  },
 }
 </script>
 

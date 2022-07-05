@@ -8,7 +8,6 @@
     <div class="modala" v-if="isActive">
       <div class="modal-content">
         <div class="modal-header">
-          <slot name="header"></slot>
           <button type="button" class="close" @click="close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -64,23 +63,20 @@ export default {
   margin: auto;
   max-width: 600px;
   height: fit-content;
-  padding: 2rem;
   border-radius: 1rem;
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
   background: #fff;
   z-index: 999;
   transform: none;
+  border: 2px solid #ced4da;
 }
-
 .modala-open {
   overflow: hidden;
   padding: 0 17px 0 0;
 }
-
 .modala .btn:last-of-type {
   margin: 0 0 0 20px;
 }
-
 .modala-overlay {
   content: "";
   position: absolute;
@@ -93,7 +89,6 @@ export default {
   background: #2c3e50;
   opacity: 0.6;
 }
-
 .close {
   float: right;
   font-size: 1.5rem;
@@ -109,7 +104,6 @@ export default {
   text-decoration: none;
   opacity: 0.75;
 }
-
 .modal-header .close {
   padding: 15px;
   margin: -25px -15px -15px auto;
@@ -123,5 +117,19 @@ button.close {
 button:focus {
   outline: 1px dotted;
   outline: 5px auto -webkit-focus-ring-color !important;
+}
+.modal-header{
+  min-height: 56px;
+  align-items: end;
+}
+.modal-body{
+  display: flex;
+  flex-wrap:wrap;
+}
+.modal-header, .modal-footer, .modal-body, .modal-content{
+  border:none;
+}
+.modal-content{
+  border-radius: 1rem;
 }
 </style>

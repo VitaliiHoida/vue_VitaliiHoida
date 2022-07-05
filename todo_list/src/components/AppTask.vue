@@ -3,7 +3,7 @@
     <div class="task-info">
       <h3 class="task__title">{{ title }}</h3>
       <p class="task__desc">{{ description }}</p>
-      <div class="tag" :class="tagStyle" :style="tagStyles">{{ tag?.content }}</div>
+      <div class="tag" :class="tagStyle">{{ tag?.content }}</div>
     </div>
     <div class="btns">
       <button class="task__done">✔️</button>
@@ -88,56 +88,52 @@ export default {
   font-size: 16px;
 }
 .task__done {
-  height: 30px;
-  width: 30px;
+  height: 40px;
+  width: 40px;
   border: none;
   background-color: unset;
 }
-
 .task__done img {
-  width: inherit;
-  height: inherit;
+  width: 100%;
+  height: 100%;
 }
-
 .task__done:hover {
   cursor: pointer;
   border-radius: 4px;
   background-color: #9ee493bb;
 }
-
 .task-info .tag {
-  border-radius: 10px;
+  border-radius: 5px;
   padding: 5px;
   display: inline-block;
   width: 75px;
   text-align: center;
   color: #fff;
+  border-width: 1px;
+  border-style: solid;
 }
-
 .btns {
   display: flex;
   align-items: center;
 }
-
 .sport{
-  background: #19b994;
-  border-color: #16836a;
+  background: blue;
+  border-color: darkblue;
 }
 .work{
-  background: #c8238e;
-  border-color: #85207d;
+  background: red;
+  border-color: darkred;
 }
 .personal{
-  background: #979ddf;
-  border-color: #4216ea;
+  background: green;
+  border-color: darkgreen;
 }
 .study{
-  background: #19b994;
-  border-color: #16836a;
+  background: grey;
+  border-color: darkgrey;
 }
 .leisure{
-  background: #19b994;
-  border-color: #16836a;
+  background: orange;
+  border-color: orangered;
 }
-
 </style>

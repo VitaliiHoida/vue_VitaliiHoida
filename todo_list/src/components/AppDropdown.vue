@@ -13,7 +13,7 @@
           :value="default_item"
       />
       <ul class="droplist">
-        <li v-for="item in values" :key="item" @click="choose(item)" v-show="item !== default_item">
+        <li v-for="item in values" :key="item" @click="choose(item)" v-show="item.content !== default_item">
           <span> {{ item.content }} </span>
         </li>
       </ul>
@@ -57,7 +57,6 @@ export default {
 .custom-select-wrapper .input-wrapper {
   background-color: #fff;
 }
-
 .custom-select-wrapper .input-wrapper input[type="text"] {
   border: 0;
   padding: 1px 5px;
@@ -67,11 +66,9 @@ export default {
   border: 1px solid #ced4da;
   border-radius: 0.375rem;
 }
-
 .custom-select-wrapper.open-dropdown ul {
   border: 1px solid #ced4da;
 }
-
 .custom-select-wrapper ul {
   border: none;
   list-style: none;
@@ -87,26 +84,21 @@ export default {
   left: 0;
   right: 0;
 }
-
 .custom-select-wrapper ul li {
-  line-height: 24px;
-  font-size: 24px;
+  line-height: 16px;
+  font-size: 16px;
   padding: 7px 15px;
 }
-
 .custom-select-wrapper ul li:hover {
   background-color: #0d6efd;
 }
-
 .custom-select-wrapper.open-dropdown ul {
   height: auto;
   transition: 0.1s ease-in;
 }
-
 .custom-select-wrapper {
   position: relative;
   cursor: pointer;
-  width: 50%;
+  width: 100%;
 }
-
 </style>

@@ -1,16 +1,16 @@
 <template>
-  <div class="task">
+  <div class="task" :class="{'done' : done}">
     <div class="task-info">
       <h3 class="task__title">{{ title }}</h3>
       <p class="task__desc">{{ description }}</p>
       <div class="tag" :class="tagStyle">{{ tag?.content }}</div>
     </div>
     <div class="btns">
-      <button class="task__done">✔️</button>
-      <button class="task__done">
+      <button class="task__done" type="button"  @click="doneTask" >✔️</button>
+      <button class="task__done" type="button"  @click="edit">
         <img src="@/assets/icons/create-outline.svg" alt="edit" />
       </button>
-      <button class="task__done">
+      <button class="task__done" type="button" @click="del">
         <img src="@/assets/icons/close-circle-outline.svg" alt="remove" />
       </button>
     </div>
@@ -33,10 +33,6 @@ export default {
       type: Object,
       default: ()=>{},
     },
-    diff:{
-      type: String,
-      default: ""
-    },
     done:{
       type: Boolean,
       default: false
@@ -45,7 +41,7 @@ export default {
   computed:{
     tagStyle () {
       let className = "";
-      switch (this.tag.id){
+      switch (this.tag?.id){
         case 0:
           className = "personal";
           break;
@@ -65,6 +61,17 @@ export default {
       return className;
     },
   },
+  methods:{
+    doneTask(){
+      this.$emit('done-task');
+    },
+    del(){
+      this.$emit('del-task');
+    },
+    edit(){
+      this.$emit('edit-task');
+    }
+  }
 }
 </script>
 
@@ -136,4 +143,14 @@ export default {
   background: orange;
   border-color: orangered;
 }
+
+.done .tag, .done .task__title, .done .task__desc{
+  opacity: 0.5;
+}
+
+.done .task__title, .done .task__desc{
+  text-decoration: line-through;
+}
+
+
 </style>

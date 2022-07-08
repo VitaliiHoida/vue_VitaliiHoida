@@ -101,8 +101,8 @@ export default {
   computed: {
     categories() {
       const arr = [];
-
-      this.defaultData?.forEach(item => {
+      let local = JSON.parse(localStorage.getItem('localData'));
+      local.forEach(item => {
         if (arr.findIndex(obj => obj.id === item.tag.id) === -1) {
           arr.push(item.tag);
         }
@@ -122,7 +122,6 @@ export default {
       this.closeModal();
     },
     choose(e) {
-      console.log(e);
       this.newData.tag = e;
     }
   },
@@ -146,9 +145,11 @@ export default {
   border: 2px solid #ced4da;
   border-radius: 1rem;
 }
+
 .btn.add {
   margin: 0 0 20px 10px;
 }
+
 .new_description, .new_title {
   width: 100%;
   margin: 0 0 10px 0;
@@ -157,6 +158,7 @@ export default {
   font-weight: 500;
   line-height: 30px;
 }
+
 @media screen and (max-width: 767px) {
   .wrapper {
     max-width: unset;

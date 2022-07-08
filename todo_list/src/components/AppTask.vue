@@ -35,7 +35,7 @@ export default {
     },
     diff:{
       type: String,
-      required: true
+      default: ""
     },
     done:{
       type: Boolean,

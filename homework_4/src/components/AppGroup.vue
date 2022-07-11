@@ -2,26 +2,28 @@
   <div class="form-group">
     <label>
       {{ name }}
-      <transition             
-        mode="out-in"
-        enter-active-class="animate__animated animate__fadeIn"
-        leave-active-class="animate__animated animate__flipOutY"
+      <transition
+          v-if="activated"
+          appear
+          appear-active-class="animate__animated animate__fadeIn"
+          enter-active-class="animate__animated animate__zoomIn"
+          leave-active-class="animate__animated animate__zoomOut"
+          mode="out-in"
       >
         <span
-          class="ico"
-          ref="ico"
-          :class="iconClass"
-          v-if="activated"
-          :key="iconClass"
+            class="ico"
+            ref="ico"
+            :class="iconClass"
+            :key="iconClass"
         >
         </span>
       </transition>
     </label>
     <input
-      class="form-control"
-      type="text"
-      @input="onInputComp"
-      :value="value"
+        class="form-control"
+        type="text"
+        @input="onInputComp"
+        :value="value"
     />
   </div>
 </template>
@@ -75,4 +77,5 @@ export default {
 .cancel {
   background-image: url("@/assets/cancel.png");
 }
+
 </style>

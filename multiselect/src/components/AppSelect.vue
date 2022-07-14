@@ -12,15 +12,14 @@
              :key="item.id"
              class="item">
           {{ item.value }}
-          <span class="item-delete" @click.once="deleteItem(item)"> x </span>
+          <span class="item-delete" @click="deleteItem(item)"> x </span>
         </div>
 
         <input type="text"
+               v-if="defaultValues.length === 0"
                v-model="search"
                placeholder="Введите значение.."
                class="search-input"
-               :class="{'positioned' : defaultValues.length > 0}"
-               v-if="defaultValues.length === 0"
         />
 
       </div>
@@ -31,8 +30,7 @@
          v-if="defaultValues.length > 0"
          v-model="search"
          placeholder="Введите значение.."
-         class="search-input"
-         :class="{'positioned' : defaultValues.length > 0}"
+         class="search-input positioned"
          @click.stop
   />
     <ul class="droplist">
@@ -53,7 +51,7 @@ export default {
   data() {
     return {
       shown: false,
-      items: Array,
+      items: [],
       search: '',
     }
   },
@@ -67,9 +65,6 @@ export default {
     show() {
       this.shown = !this.shown;
     },
-    hide() {
-      this.shown = false;
-    },
     result() {
       this.items.push(this.values.value);
     },
@@ -79,7 +74,6 @@ export default {
   },
   computed: {
     filteredList() {
-
       return this.values.filter( item => {
         return item.value.toLowerCase().includes(this.search.toLowerCase())
       })
@@ -88,6 +82,9 @@ export default {
   created() {
     /*сворачиваем дропдаун при клике в любой точке*/
     document.addEventListener('click', this.hide);
+  },
+  beforeUnmount() {
+    document.removeEventListener('click', this.hide);
   }
 };
 </script>
